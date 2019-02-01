@@ -41,6 +41,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <redirectTestOutputToFile>true</redirectTestOutputToFile>
+    <spotbugs-annotations.version>3.1.8</spotbugs-annotations.version>
     <testRetryCount>2</testRetryCount>
 
     <!-- connector dependencies -->
@@ -61,6 +62,7 @@
     <maven-surefire-plugin.version>2.21.0</maven-surefire-plugin.version>
     <nifi.nar.plugin.version>1.2.0</nifi.nar.plugin.version>
     <puppycrawl.checkstyle.version>6.19</puppycrawl.checkstyle.version>
+    <spotbugs-maven-plugin.version>3.1.8</spotbugs-maven-plugin.version>
   </properties>
 
   <licenses>
@@ -88,6 +90,11 @@
         <groupId>org.projectlombok</groupId>
         <artifactId>lombok</artifactId>
         <version>${lombok.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-annotations</artifactId>
+        <version>${spotbugs-annotations.version}</version>
       </dependency>
       <!-- test dependencies -->
       <dependency>
@@ -125,6 +132,11 @@
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.spotbugs</groupId>
+      <artifactId>spotbugs-annotations</artifactId>
       <scope>provided</scope>
     </dependency>
 
@@ -279,6 +291,15 @@
             </execution>
           </executions>
         </plugin>
+        <!-- spotbugs -->
+        <plugin>
+          <groupId>com.github.spotbugs</groupId>
+          <artifactId>spotbugs-maven-plugin</artifactId>
+          <version>${spotbugs-maven-plugin.version}</version>
+          <configuration>
+            <excludeFilterFile>${session.executionRootDirectory}/src/spotbugs/findbugsExclude.xml</excludeFilterFile>
+          </configuration>
+        </plugin>
       </plugins>
     </pluginManagement>
 
@@ -311,6 +332,12 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
+      </plugin>
+
+      <!-- spotbugs -->
+      <plugin>
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
