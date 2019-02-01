@@ -18,17 +18,17 @@
  */
 package org.apache.pulsar.ecosystem.io.random;
 
-import java.util.HashMap;
-import java.util.Map;
-import org.apache.pulsar.io.core.SourceContext;
-import org.junit.Before;
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
+
+import java.util.HashMap;
+import java.util.Map;
+import org.apache.pulsar.io.core.SourceContext;
+import org.junit.Before;
+import org.junit.Test;
 
 /**
  * Unit test {@link RandomConnector}.

@@ -27,8 +27,6 @@ import org.apache.pulsar.functions.api.Record;
 import org.apache.pulsar.io.core.Source;
 import org.apache.pulsar.io.core.SourceContext;
 
-import static avro.shaded.com.google.common.base.Preconditions.checkState;
-
 /**
  * A source connector that generate randomized words.
  */
@@ -41,7 +39,9 @@ public class RandomConnector implements Source<byte[]> {
     @Override
     public void open(Map<String, Object> map,
                      SourceContext sourceContext) throws Exception {
-        checkState(null == config, "Connector is already open");
+        if (null != config) {
+            throw new IllegalStateException("Connector is already open");
+        }
 
         // load the configuration and validate it
         this.config = RandomConnectorConfig.load(map);
@@ -52,7 +52,9 @@ public class RandomConnector implements Source<byte[]> {
     }
 
     private void checkConnectorOpen() {
-        checkState(null != config, "Connector is not open yet");
+        if (null == config) {
+            throw new IllegalStateException("Connector is not open yet");
+        }
     }
 
     @Override
