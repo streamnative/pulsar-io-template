@@ -1,156 +1,173 @@
-## Pulsar IO :: Template
+# Contribute Apache Pulsar connector to StreamNative Hub
 
-This is a template project for developing an enterprise-grade
-pulsar IO connector.
+Welcome to contribute to [StreamNative Hub](https://streamnative.io/en/blog/tech/2020-05-26-intro-to-hub)! You can submit connectors around [Apache Pulsar](https://pulsar.apache.org/en/) and [StreamNatvie](https://streamnative.io/) ecosystems and host them on  [StreamNative Hub](https://hub.streamnative.io/).
 
-This template already sets up a project structure, including
-necessary dependencies and plugins. The IO connector developers
-can clone this project to develop their own connector.
+This instruction guides you through every step of submitting a connector to [StreamNative Hub](https://hub.streamnative.io/), including the workflow for both code and doc.
 
-### Project Layout
+## Code
 
-Before starting developing your own connector, please take a look at
-how this template project organize the files for a connector.
+[streamnative / pulsar-io-template](https://github.com/streamnative/pulsar-io-template) is a project template for developing an enterprise-grade Pulsar connector. It sets up a project structure and contains necessary dependencies and plugins. 
 
-```bash
+To develop a connector quicker and easier, you can clone this project template.
 
-├── conf
-├── docs
-├── src
-│   ├── checkstyle
-│   ├── license
-│   │   └── ALv2
-│   ├── main
-│   │   └── java
-│   ├── spotbugs
-│   └── test
-│       └── java
+This example develops a Pulsar connector named `pulsar-io-foo`.
 
-```
+1. **Create your connector project**. 
 
-- `conf` directory is used for storing examples of config files of this connector.
-- `docs` directory is used for keeping the documentation of this connector.
-- `src` directory is used for storing the source code of this connector.
-  - `src/checkstyle`: store the checkstyle configuration files
-  - `src/license`: store the license header for this project. `mvn license:format` can
-    be used for formatting the project with the stored license header in this directory.
-  - `src/spotbugs`: store the spotbugs configuration files
-  - `src/main`: for keeping all the main source files
-  - `src/test`: for keeping all the related tests
+    (1) On your local machine anywhere, clone the [pulsar-io-template](https://github.com/streamnative/pulsar-io-template) to create the `pulsar-io-foo` project.
 
-### Develop a Connector
+    ```bash
+    git clone --bare https://github.com/streamnative/pulsar-io-template.git pulsar-io-foo
+    ```
 
-Here are the instructions for developing a Pulsar connector `pulsar-io-foo`
-use this project template.
+    You will get the following directories to host different files.
 
-#### Clone the Template
+    ```bash
+    ├── conf // stores configuration examples.
+    ├── docs // stores user guides.
+    ├── src // stores source codes.
+    │   ├── checkstyle // stores checkstyle configuration files.
+    │   ├── license // stores license headers. You can use `mvn license:format` to format the project with the stored license header.
+    │   │   └── ALv2
+    │   ├── main // stores all main source files.
+    │   │   └── java
+    │   ├── spotbugs // stores spotbugs configuration files.
+    │   └── test // stores all related tests.
+    │ 
+    ```
 
-You can clone the template project with `--bare`.
+    (2) Push the `pulsar-io-foo` project to your GitHub account.
 
-```bash
-$ git clone --bare https://github.com/streamnative/pulsar-io-template.git pulsar-io-foo
-```
+    ```
+    cd pulsar-io-foo
+    git push https://github.com/<your-github-account>/pulsar-io-foo
+    ```
 
-#### Push to Github
+2. **Develop your connector**.
 
-You can create a `pulsar-io-foo` project at your Github account and push the project to your
-Github account.
+    (1) To customize your connector, update the following configurations in the [`pom`](https://github.com/streamnative/pulsar-io-template/blob/c415593b04d40a868bd3d51b5d399569a50a4b67/pom.xml) file.
 
-```
-$ cd pulsar-io-foo
-$ git push https://github.com/<Your-Github-Account>/pulsar-io-foo
-```
+    Configuration|Description
+    |---|---
+    `artifactId`|Update `artifactId` to your connector name.
+    `version` |Update `version` to the desired connector version.<br><br>**Tip**: it is recommended to define the connector’s version NO. same as Pulsar’s version NO. In this way, it is easy to figure out the version relationships between the connector and Pulsar.
+    `name`|Update `name` to `Pulsar Ecosystem :: IO Connector :: <your-connector-name>`.
+    `description`|Update `description` to the descriptions of your connector.
 
-Once the project is pushed to your Github account, you can then develop the connector as
-a normal Github project.
+    (2) Create a package `org.apache.pulsar.ecosystem.io.foo` in `src/main/java/org/apache/pulsar/ecosystem/io` to develop your connector logic. 
 
-```bash
-$ cd ..
-$ rm -rf pulsar-io-foo
-$ git clone https://github.com/<Your-Github-Account>/pulsar-io-foo
-```
+    > **Tip**
+    >
+    > - [Here](https://github.com/streamnative/pulsar-io-template/tree/master/src/main/java/org/apache/pulsar/ecosystem/io/random) are some code examples for developing a connector.
+    >
+    > - To ensure a consistent codebase, it is recommended to run the checkstyle and spotbugs. For more information, see [check your code](#check-your-code). 
 
-#### Update Pom File
+3. **Test your connector**.
 
-The first thing to do is to update the [pom file](pom.xml) to customize your connector.
+    Create a package `org.apache.pulsar.ecosystem.io.foo` in the `src/test` directory to develop your connector tests. For more information, see [how to write a unit test in Java](https://www.webucator.com/how-to/how-write-unit-test-java.cfm).
 
-1. Change `artifactId` to `pulsar-io-foo`.
-2. Update `version` to a version you like. A good practice is to pick the pulsar version
-   as the same version for your connector so that it is easy to figure out what version of
-   this connector works for what version of Pulsar.
-3. Update `name` to `Pulsar Ecosystem :: IO Connector :: <Your Connector Name>`.
-4. Update `description` to the description of your connector.
+    > **Tip**
+    > 
+    > - It is strongly recommended to write tests for your connector. For more information, see [test examples](https://github.com/streamnative/pulsar-io-template/tree/master/src/test/java/org/apache/pulsar/ecosystem/io/random).
+    >
+    > - To ensure a consistent codebase, it is recommended to run the checkstyle and spotbugs. For more information, see [check your code](#check-your-code). 
 
-Once the above steps are done, you will have a real `pulsar-io-foo` project to develop
-your own connector.
+4. **Check your code**.
 
-#### Implement Your Connector
+    To ensure a consistent codebase, it is recommended to run the checkstyle and spotbugs, which are already set by the project template.
+    
+    (1) Run the checkstyle.
 
-Before you start implementing your own connector, it would be good to remove the example
-connector included in the project template.
+    ```bash
+    mvn checkstyle:check
+    ```
 
-```bash
-$ rm -rf src/main/java/org/apache/pulsar/ecosystem/io/random
-```
+    (2) Run the spotbugs.
 
-Then you can create a package `org.apache.pulsar.ecosystem.io.foo` to develop your connector
-logic under it.
+    ```bash
+    mvn spotbugs:check
+    ```
 
-#### Test Your Connector
+5. **Choose a license**.
 
-It is strongly recommended to write tests for your connector.
+    You can choose [Apache License 2.0](https://github.com/streamnative/pulsar-io-template/blob/master/LICENSE). For more information, see [choose an open source license](https://choosealicense.com/).
 
-There are a few test examples under
-[src/test/java/org/apache/pulsar/ecosystem/io/random](src/test/java/org/apache/pulsar/ecosystem/io/random)
-showing how to test a connector.
+    After choosing the license, you need to finish the following tasks.
 
-Before you start writing tests for your connector, you can remove those examples
+    (1) Replace the [`LICENSE`](https://github.com/streamnative/pulsar-io-template/blob/master/LICENSE) file in the project template with your desired license.
 
-```bash
-$ rm -rf src/test/java/org/apache/pulsar/ecosystem/io/random
-```
+    (2) Add your license header to the `src/license/<your-license-header>.txt` file.
 
-Then you can create a package `org.apache.pulsar.ecosystem.io.foo` under `src/test` directory
-to develop the tests for your connector.
+    (3) Update the license-maven-plugin configuration in the `pom.xml` file to point to your license header.
 
-#### Checkstyle and Spotbugs
+    (4) Run the `license:format` command to format the project with your license.
 
-The template project already sets up checkstyle plugin and spotbugs plugin for ensuring you
-write a connector that has a consistent coding convention with other connectors and high code
-quality.
+## Doc
 
-To run checkstyle:
+Documentation is one of the maturity indicators for measuring a project. High-quality user documentation helps users to use the connector efficiently and improves users’ experiences.
 
-```bash
-$ mvn checkstyle:check
-```
+You can maintain documentation using the same tools and processes that used to maintain your connector code.
 
-To run spotbugs:
+1. **Create a `docs` repo**.
 
-```bash
-$ mvn spotbugs:check
-```
+    In your root directory of connector repo, create a doc repo named `docs`.
 
-#### License
+    > **Note**
+    >
+    > Name the repo with `docs` instead of other names, or else your docs are not synced to StreamNative Hub.
 
-Before you publish your connector for others to use, you might consider pick up a license
-you like to use for your connector.
+    <img width="589" alt="1" src="https://user-images.githubusercontent.com/50226895/119435808-85cf0300-bd4d-11eb-97b2-ab63da049d5e.png">
 
-Once you choose the license, you should do followings:
+2. **Write the docs** for each type of connector.
 
-- Replace the `LICENSE` file with your chosen license.
-- Add your license header to `src/license/<your-license-header>.txt`.
-- Update the license-maven-plugin configuration in pom.xml to point to your license header
-  `src/license/<your-license-header>.txt`.
-- Run `license:format` to format the project with your license
+    **Example**
+
+    - [`sqs-source.md`](https://github.com/streamnative/pulsar-io-sqs/blob/master/docs/sqs-source.md)
+
+    - [`sqs-sink.md`](https://github.com/streamnative/pulsar-io-sqs/blob/master/docs/sqs-sink.md)
+    
+    <img width="705" alt="2" src="https://user-images.githubusercontent.com/50226895/119435868-a303d180-bd4d-11eb-953b-7de91608b4e0.png">
+
+    > **Note**
+    >
+    > -  [Here](https://github.com/streamnative/pulsar-io-sqs/tree/master/docs) are examples
+ of the SQS connector docs. It is strongly recommended to follow the doc architecture in this example, or else your docs might not be synced to StreamNative Hub.
+    >
+    > - The docs on these branches (master, branch-x.x.x. For example, branch-2.7.0) and tags (vx.x.x. For example, v2.7.1, v2.7.2) can be shown on the StreamNative Hub website. Or else the docs on other branches and tags are not shown on the StreamNative Hub website. Pay attention to your branch and tag names.
+    > <img width="616" alt="3" src="https://user-images.githubusercontent.com/50226895/119435914-ba42bf00-bd4d-11eb-9f83-409eb78f219d.png">
+    > <img width="614" alt="4" src="https://user-images.githubusercontent.com/50226895/119435917-bc0c8280-bd4d-11eb-820c-cebb74cc6c55.png">
 
 
+    > **Tip**
+    >
+    > - To reduce maintenance costs, use a variable (for example, `{{connector:version}}`) instead of writing the specific connector version. In this way, the corresponding connector version is generated and shown automatically along with each connector release. 
+    >
+    > - To ensure consistency throughout all connector documentation, it is recommended to follow the [Google Developer Documentation Style Guide](https://developers.google.com/style).
 
 
+3. **Sync the docs** to [StreamNative Hub](https://hub.streamnative.io/).
+
+    Create YAML files in your connector doc repository. The backend script syncs docs from your connector repository to [StreamNative Hub](https://hub.streamnative.io/) automatically using the YAML files.
+
+    ```
+    connectors/<your-connector-repository-name>/<your-connector-repository-name>.yaml
+    ```
+
+    **Example**
+
+    - [`sqs-source.yaml`](https://github.com/streamnative/pulsar-hub/blob/master/connectors/sqs-source/sqs-source.yaml)
+    <img width="744" alt="6" src="https://user-images.githubusercontent.com/50226895/119436182-48b74080-bd4e-11eb-9db6-e0e7ea68de50.png">
+    
+    - [`sqs-sink.yaml`](https://github.com/streamnative/pulsar-hub/blob/master/connectors/sqs-sink/sqs-sink.yaml)
+    <img width="747" alt="7" src="https://user-images.githubusercontent.com/50226895/119436191-49e86d80-bd4e-11eb-942a-cd078dc745d7.png">
 
 
+4. Send a PR and **request docs review**.
 
+    Your doc will be reviewed by connector maintainers. You will work together to finalize the doc.
 
+    [Here](https://github.com/streamnative/pulsar-hub/pull/139/files) is a PR example.
 
+## More info
 
-
+If you have any questions about contributing your connector to [StreamNative Hub](https://hub.streamnative.io/), feel free to [open an issue](https://github.com/streamnative/pulsar-io-template/issues/new/choose) to discuss it with us. We look forward to your contribution!
