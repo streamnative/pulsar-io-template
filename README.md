@@ -1,6 +1,6 @@
-# Contribute Apache Pulsar connector to StreamNative Hub
+# Connector Development Guide
 
-Welcome to contribute to [StreamNative Hub](https://streamnative.io/en/blog/tech/2020-05-26-intro-to-hub)! You can submit connectors around [Apache Pulsar](https://pulsar.apache.org/en/) and [StreamNatvie](https://streamnative.io/) ecosystems and host them on  [StreamNative Hub](https://hub.streamnative.io/).
+Welcome to contribute to [StreamNative Hub](https://streamnative.io/en/blog/tech/2020-05-26-intro-to-hub)! You can submit connectors around [Apache Pulsar](https://pulsar.apache.org/en/) and [StreamNatvie](https://streamnative.io/) ecosystems and host them on [StreamNative Hub](https://hub.streamnative.io/).
 
 This instruction guides you through every step of submitting a connector to [StreamNative Hub](https://hub.streamnative.io/), including the workflow for both code and doc.
 
@@ -167,7 +167,15 @@ You can maintain documentation using the same tools and processes that used to m
     Your doc will be reviewed by connector maintainers. You will work together to finalize the doc.
 
     [Here](https://github.com/streamnative/pulsar-hub/pull/139/files) is a PR example.
+    
+## Blog
+
+After finishing the code and documentation, you can create a post to announce the connector. You can contact us to publish it on the [StreamNative website](https://streamnative.io/blog) and we can work together to promote it to multiple channels.
+
+**Example**
+
+- [Announcing AWS SQS Connector for Apache Pulsar](https://streamnative.io/en/blog/tech/2021-03-17-announcing-aws-sqs-connector-for-apache-pulsar)
 
 ## More info
 
-If you have any questions about contributing your connector to [StreamNative Hub](https://hub.streamnative.io/), feel free to [open an issue](https://github.com/streamnative/pulsar-io-template/issues/new/choose) to discuss it with us. We look forward to your contribution!
+If you have any questions about contributing your connector to [StreamNative Hub](https://hub.streamnative.io/), feel free to [open an issue](https://github.com/streamnative/pulsar-io-template/issues/new/choose) to discuss it with us or [contact us](https://streamnative.io/en/contact). We look forward to your contribution!
