@@ -1,27 +1,136 @@
-## Pulsar IO :: \<Connector Name\>
+---
+dockerfile: "https://hub.docker.com/r/streamnative/pulsar-io-{NAME}"
+download: "https://github.com/streamnative/pulsar-io-{NAME}/releases"
+alias: {NAME} Connector
+---
 
-<!-- write a description for the connector -->
+<!-- give a description of the connector here -->
 
-### Installation
+<!-- add a logo -->
+![](/docs/example.png)
 
-<!-- write instruction of how to install this connector -->
+## Quick start
 
-### Configuration
+### Prerequisites
 
-<!-- write instruction of how to configure this connector -->
+The prerequisites for connecting a {NAME} connector to external systems include:
 
-### Examples
+1. {STEPS}
 
-<!-- provide an example of how to use this connector -->
 
-### Monitoring
+### 1. Create a connector
 
-<!-- provide instructions of how to monitoring this connector if there is any -->
+The following command shows how to use [pulsarctl](https://github.com/streamnative/pulsarctl) to create a `builtin` connector. If you want to create a `non-builtin` connector,
+you need to replace `--sink-type bigquery` with `--archive /path/to/pulsar-io-bigquery.nar`. You can find the button to download the `nar` package at the beginning of the document.
 
-### Troubleshooting
+{% callout title="For StreamNative Cloud User" type="note" %}
+If you are a StreamNative Cloud user, you need [set up your environment](https://docs.streamnative.io/docs/connector-setup) first.
+{% /callout %}
 
-<!-- provide instructions of how to troubleshoot the problems occur to this connector -->
+```bash
+pulsarctl {TYPE} create \
+  --{TYPE}-type {NAME} \
+  --name {NAME} \
+  --tenant public \
+  --namespace default \
+  --inputs "Your topic name" \
+  --parallelism 1 \
+  --{TYPE}-config \
+  '{
+    // parameters required here for config
+  }'
+```
 
-### License
+The `--{TYPE}-config` is the minimum necessary configuration for starting this connector, and it is a JSON string. You need to substitute the relevant parameters with your own.
+If you want to configure more parameters, see [Configuration Properties](#configuration-properties) for reference.
 
-<!-- describe the license of this connector -->
+{% callout title="Note" type="note" %}
+You can also choose to use a variety of other tools to create a connector:
+- [pulsar-admin](https://pulsar.apache.org/docs/3.1.x/io-use/): The command arguments for `pulsar-admin` are similar to those of `pulsarctl`. You can find an example for [StreamNative Cloud Doc](https://docs.streamnative.io/docs/connector-create#create-a-built-in-connector ).
+- [RestAPI](https://pulsar.apache.org/sink-rest-api/?version=3.1.1): You can find an example for [StreamNative Cloud Doc](https://docs.streamnative.io/docs/connector-create#create-a-built-in-connector).
+- [Terraform](https://github.com/hashicorp/terraform): You can find an example for [StreamNative Cloud Doc](https://docs.streamnative.io/docs/connector-create#create-a-built-in-connector).
+- [Function Mesh](https://functionmesh.io/docs/connectors/run-connector): The docker image can be found at the beginning of the document.
+{% /callout %}
+
+### 2. Send messages to the topic
+
+{% callout title="Note" type="note" %}
+If your connector is created on StreamNative Cloud, you need to authenticate your clients. See [Build applications using Pulsar clients](https://docs.streamnative.io/docs/qs-connect#jumpstart-for-beginners) for more information.
+{% /callout %}
+
+``` java
+@Data
+@ToString
+public class TestMessage {
+    private String testString;
+    private String testInt;
+
+    public static void main(String[] args) {
+        PulsarClient client = PulsarClient.builder()
+        .serviceUrl("{{Your Pulsar URL}}")
+        .build();
+
+        Producer<TestMessage> producer = client.newProducer(Schema.{SUPPORTED-TYPE}(TestMessage.class))
+            .topic("{{Your topic name}}")
+            .create();
+
+        {SUPPORTED-TYPE} testMessage = new {SUPPORTED-TYPE}();
+        testMessage.setTestString("test string");
+        testMessage.setTestInt(123);
+        MessageId msgID = producer.send(testMessage);
+        System.out.println("Publish " + testMessage + " and message ID " + msgID);
+
+        producer.flush();
+        producer.close();
+        client.close();
+    }
+}
+
+```
+
+### 3. {HOW TO FIND DATA}
+
+```
+// EXAMPLE HERE
+```
+
+## Configuration Properties
+
+Before using the {NAME} connector, you need to configure it. This table outlines the properties and the descriptions.
+
+| Name                          | Type    | Required | Sensitive | Default           | Description                                                                                                                                                                                                                                                                                                                                                             |
+|-------------------------------|---------|----------|-----------|-------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+{YOUR CONFIGURATION}
+
+## Advanced features
+
+// INFORMATION
+
+### Delivery guarantees
+
+The Pulsar IO connector framework provides three [delivery guarantees](https://pulsar.apache.org/docs/next/functions-concepts#processing-guarantees-and-subscription-types): `at-most-once`, `at-least-once`, and `effectively-once`.
+
+Currently, the {NAME} connector provides the {GUARANTEES} delivery guarantee.
+
+### {ADDITIONAL INFORMATION NEEDED}
+
+// PUT ADDITIONAL INFORMATION REQUIRED HERE
+
+{% callout title="Note" type="note" %}
+<!-- Note - use callouts like this for relevant information -->
+{% /callout %}
+
+This table lists the schema types that currently are supported to be converted.
+
+<!-- Note - this is an example, set your own -->
+
+| Schema          | Supported |
+|-----------------|-----------|
+| AVRO            | Yes       |
+| PRIMITIVE       | Yes       |
+| PROTOBUF_NATIVE | Yes       |
+| PROTOBUF        | No        |
+| JSON            | No        |
+| KEY_VALUE       | No        |
+
+<!-- Add additional relevant documentation here -->
